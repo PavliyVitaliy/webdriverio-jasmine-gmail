@@ -40,6 +40,17 @@ var GmailPage = Object.create(Page, {
 
     createMessage: { value: function () {
         this.createMessageButton.click();
+    } },
+
+    textTheme: { value: function () {
+        return this.firstIncomingMassage.element('.bog').getText();
+
+    } },
+    
+    waitTheme: { value: function () {
+        return browser.waitUntil(function (Theme) {
+            return this.firstIncomingMassage.element('.bog').getText() === Theme
+        }, 5000, 'expected text to be different after 5s');
     } }
 });
 

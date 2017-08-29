@@ -1,9 +1,25 @@
 var path = require('path');
 var settings = require('./helpers/settings'),
     GmailPage = require('../page/gmail.page'),
-    mail = settings.mail;
+    LoginPage = require('../page/login.page'),
+    mail = settings.USER_NAME,
+    password = settings.PASSWORD;
+
+
 
 var today = new Date;
+
+beforeAll(function () {
+    LoginPage.open();
+    LoginPage.username.waitForExist();
+    LoginPage.username.setValue(mail);
+    LoginPage.submitLog();
+    LoginPage.password.waitForExist();
+    LoginPage.password.setValue(password);
+    LoginPage.submitPass();
+    GmailPage.talkRoster.waitForExist();
+    expect(GmailPage.title()).toMatch(mail);
+});
 
 describe('Gmail', function () {
 
@@ -30,7 +46,7 @@ describe('Gmail', function () {
         expect(GmailPage.formNewMassage.isVisible()).toBe(false);
         GmailPage.incomingLink.waitForExist();
         GmailPage.incomingLink.click();
-        browser.pause(2000);
+        GmailPage.firstIncomingMassage.waitForExist();
         expect(GmailPage.firstIncomingMassage.getText()).toContain(theme);
         GmailPage.firstIncomingMassage.click();
         GmailPage.textIncomingMassage.waitForExist();
